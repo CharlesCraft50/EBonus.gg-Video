@@ -37,8 +37,8 @@ $(document).ready(function(){
     };
 
     //Captcha Funtion
-window.captchaResolve = function(){
-     var clickCheck = setInterval(function() {
+    window.captchaResolve = function(){
+        var clickCheck = setInterval(function() {
             if (document.querySelectorAll('.recaptcha-checkbox-checkmark').length > 0) {
                 clearInterval(clickCheck);
                 document.querySelector('.recaptcha-checkbox-checkmark').click();
@@ -46,12 +46,12 @@ window.captchaResolve = function(){
                 clearInterval(clickCheck);
             }
         }, 1000);
-    setTimeout(function(){$('input[value="Continue"]').click();}, 15000);
-};
+        setTimeout(function(){$('input[value="Continue"]').click();}, 15000);
+    };
 
-setTimeout(captchaResolve, 5000);
+    setTimeout(captchaResolve, 5000);
 
-setTimeout(function(){window.location.href='https://ebonus.gg/earn-coins/watch';}, 120000);
+    setTimeout(function(){window.location.href='https://ebonus.gg/earn-coins/watch';}, 120000);
 
     if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0 || $('label[for="CAPTCHA"]').length > 0) {
         //Captcha Resolver
