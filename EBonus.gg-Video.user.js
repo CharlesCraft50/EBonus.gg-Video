@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EBonus.gg Video
 // @namespace    http://tampermonkey.net/
-// @version      2.1
+// @version      2.2
 // @description  Click the next video button and the circles/bubbles coins automatically. With other cool features added. It also skip the captcha!
 // @author       CharlesCraft50
 // @copyright    2019, CharlesCraft50 (https://openuserjs.org/users/CharlesCraft50)
@@ -99,10 +99,9 @@ $(document).ready(function(){
         var playVideo = setInterval(function(){
             if($('.vjs-play-control.vjs-control.vjs-button[title="Play"]').length == 1) {
                $('.vjs-play-control.vjs-control.vjs-button').click();
-            } else {
-                clearInterval(playVideo);
             }
         }, 1000);
+        setTimeout(function(){clearInterval(playVideo);}, 15000);
     }
 
     var removeElements = function(text, selector) {
