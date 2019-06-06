@@ -1,7 +1,10 @@
-# EBonus.gg-Video
 Click the next video button automatically. With other cool features added.
 You can see how much coins you earned while running this script and etc.
 Please create feedback or contact me if there are any bugs or errors.
+
+Github: https://github.com/CharlesCraft50/EBonus.gg-Video/blob/master/EBonus.gg-Video.user.js
+Minified version of the script: https://github.com/CharlesCraft50/EBonus.gg-Video/blob/master/EBonus.gg-Video%20Minified.user.js
+Lite version: https://greasyfork.org/scripts/384690-ebonus-gg-video-lite
 
 (Always check and be updated about this script for better experienced!)
 
