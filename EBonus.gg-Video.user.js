@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EBonus.gg Video
 // @namespace    http://tampermonkey.net/
-// @version      2.3
+// @version      2.5
 // @description  Click the next video button and the circles/bubbles coins automatically. With other cool features added. It also skip the captcha!
 // @author       CharlesCraft50
 // @copyright    2019, CharlesCraft50 (https://openuserjs.org/users/CharlesCraft50)
@@ -54,7 +54,7 @@ $(document).ready(function(){
         sessionStorage.setItem("circleEarnedGet", circleEarned)
         $('#coinsEarnArea').html('0');
         $('#coinCountArea').html('0');
-        $('#vCarea').html("11 Videos: 0");
+        $('#vCarea').html(""+numberOfVideos+" Videos: 0");
         $('#vEarea').html("Video Coins Earned: 0");
         $('#cCarea').html("Circle Clicked: 0");
         $('#cEarea').html("Circle Earned: 0");
@@ -73,7 +73,7 @@ $(document).ready(function(){
         setTimeout(function(){$('input[value="Continue"]').click();}, 10000);
     };
 
-    setTimeout(captchaResolve, 5000);
+    setTimeout(captchaResolve, 1000);
 
     setTimeout(function(){window.location.href='https://ebonus.gg/earn-coins/watch';}, 120000);
 
@@ -110,6 +110,9 @@ $(document).ready(function(){
         return wrapped.html();
     }
 
+    //Number of videos
+    var numberOfVideos = removeElements($('h3.desc_item.nomargin').html(), 'span').replace(/Watch|videos|\s/gi, "");
+
     if(sessionStorage.getItem("coinGet") === null || sessionStorage.getItem("coinGet") == NaN || sessionStorage.getItem("coinGet") == "NaN") {
         var coinCount = 0;
     } else {
@@ -139,15 +142,15 @@ $(document).ready(function(){
     if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0 || $('label[for="CAPTCHA"]').length > 0) {
         console.log("Captcha Alert");
     } else {
-        if($("#next-video-btn").html() == "Next Video [11/11]") {
+        if($("#next-video-btn").html() == "Next Video ["+numberOfVideos+"/"+numberOfVideos+"]") {
             coinsEarn = parseInt(sessionStorage.getItem("coinsEarned")) + parseInt(removeElements($('a[href="#coins_per_video"]').html(), "i").replace(/to earn|coins!|\s/gi, ""));
             sessionStorage.setItem("coinsEarned", coinsEarn);
         }
 
-        if($("#next-video-btn").html() == "Next Video [11/11]") {
+        if($("#next-video-btn").html() == "Next Video ["+numberOfVideos+"/"+numberOfVideos+"]") {
             coinCount += 1;
             sessionStorage.setItem("coinGet", coinCount);
-            console.log("11 videos = " + coinCount);
+            console.log(""+numberOfVideos+" videos = " + coinCount);
         }
     }
 
@@ -156,7 +159,7 @@ $(document).ready(function(){
     $("body").append("<div class='button' id='videoCount' style='position: fixed; bottom: 190px; right: 0; font-size: 20px; cursor: default; transform: translateY(140px); transition: transform 0.5s linear;'>Video "+$('a#next-video-btn').html().replace(/Next Video /gi, '')+": <span id='coinCountArea'>"+coinCount+"</span></div>");
     $("body").append("<input type='button' id='resetDataEarned' class='button' style='position: fixed; bottom: 240px; right: 0; font-size: 20px; transform: translateY(140px); transition: transform 0.5s linear;' title='Resets data' value='Reset'>");
     //$("body").append("<a class='coins_popup circle adsbox' href='#' style='top: 140px; right: 0; background-color: rgb(91, 155, 209);'><span>10</span><br>COIN</a>");
-    $("body").append("<div id='dataArea' class='dropdown-content' style='position: fixed; bottom: 45px; right: 0; font-size: 20px; cursor: default;'><span id='vCarea'>11 Videos: "+coinCount+"</span><span id='vEarea' style='background-color: #73cf11; color: white;'>Video Coins Earned: "+coinsEarn+"</span><span id='cCarea'>Circle Clicked: "+circleClicked+"</span><span id='cEarea' style='background-color: #73cf11; color: white;'>Circle Earned: "+circleEarned+"</span></div>");
+    $("body").append("<div id='dataArea' class='dropdown-content' style='position: fixed; bottom: 45px; right: 0; font-size: 20px; cursor: default;'><span id='vCarea'>"+numberOfVideos+" Videos: "+coinCount+"</span><span id='vEarea' style='background-color: #73cf11; color: white;'>Video Coins Earned: "+coinsEarn+"</span><span id='cCarea'>Circle Clicked: "+circleClicked+"</span><span id='cEarea' style='background-color: #73cf11; color: white;'>Circle Earned: "+circleEarned+"</span></div>");
 
     $(".cEBtn").click(function(){
         document.getElementById("dataArea").classList.toggle("showdd");
