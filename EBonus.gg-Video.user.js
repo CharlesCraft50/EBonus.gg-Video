@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EBonus.gg Video
 // @namespace    http://tampermonkey.net/
-// @version      2.5
+// @version      2.6
 // @description  Click the next video button and the circles/bubbles coins automatically. With other cool features added. It also skip the captcha!
 // @author       CharlesCraft50
 // @copyright    2019, CharlesCraft50 (https://openuserjs.org/users/CharlesCraft50)
@@ -62,24 +62,26 @@ $(document).ready(function(){
 
     //Captcha Funtion
     window.captchaResolve = function(){
-        var clickCheck = setInterval(function() {
-            if (document.querySelectorAll('.recaptcha-checkbox-checkmark').length > 0) {
-                clearInterval(clickCheck);
-                document.querySelector('.recaptcha-checkbox-checkmark').click();
-            } else {
-                clearInterval(clickCheck);
-            }
-        }, 1000);
-        setTimeout(function(){$('input[value="Continue"]').click();}, 10000);
+        if($('.recaptcha-checkbox').attr('aria-checked') === 'false') {
+            var clickCheck = setInterval(function() {
+                if (document.querySelectorAll('.recaptcha-checkbox-checkmark').length > 0) {
+                    clearInterval(clickCheck);
+                    document.querySelector('.recaptcha-checkbox-checkmark').click();
+                }
+            }, 50);
+            var subCaptcha = setInterval(function(){
+                if($('.recaptcha-checkbox').attr('aria-checked') === 'true') {
+                    clearInterval(subCaptcha);
+                    $('input[value="Continue"]').click();
+                }
+            }, 50);
+        }
     };
-
-    setTimeout(captchaResolve, 1000);
 
     setTimeout(function(){window.location.href='https://ebonus.gg/earn-coins/watch';}, 120000);
 
-    if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0 || $('label[for="CAPTCHA"]').length > 0) {
-        //Captcha Resolver
-        //captchaResolve();
+    if($('.recaptcha-checkbox').attr('aria-checked') === 'false') {
+        captchaResolve();
     } else {
         //Start
         var coinsclicker = setInterval(function() {
@@ -139,7 +141,7 @@ $(document).ready(function(){
         circleEarned = parseInt(sessionStorage.getItem("circleEarnedGet"));
     }
 
-    if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0 || $('label[for="CAPTCHA"]').length > 0) {
+    if($('.recaptcha-checkbox').attr('aria-checked') === 'false') {
         console.log("Captcha Alert");
     } else {
         if($("#next-video-btn").html() == "Next Video ["+numberOfVideos+"/"+numberOfVideos+"]") {
