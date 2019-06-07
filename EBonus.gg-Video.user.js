@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EBonus.gg Video
 // @namespace    http://tampermonkey.net/
-// @version      2.6
+// @version      2.7
 // @description  Click the next video button and the circles/bubbles coins automatically. With other cool features added. It also skip the captcha!
 // @author       CharlesCraft50
 // @copyright    2019, CharlesCraft50 (https://openuserjs.org/users/CharlesCraft50)
@@ -60,28 +60,33 @@ $(document).ready(function(){
         $('#cEarea').html("Circle Earned: 0");
     };
 
-    //Captcha Funtion
-    window.captchaResolve = function(){
-        if($('.recaptcha-checkbox').attr('aria-checked') === 'false') {
-            var clickCheck = setInterval(function() {
-                if (document.querySelectorAll('.recaptcha-checkbox-checkmark').length > 0) {
-                    clearInterval(clickCheck);
-                    document.querySelector('.recaptcha-checkbox-checkmark').click();
-                }
-            }, 50);
-            var subCaptcha = setInterval(function(){
-                if($('.recaptcha-checkbox').attr('aria-checked') === 'true') {
-                    clearInterval(subCaptcha);
-                    $('input[value="Continue"]').click();
-                }
-            }, 50);
+     //Captcha Funtion
+    if (location.href.indexOf('google.com/recaptcha') > -1) {
+        var clickCheck = setInterval(function() {
+            if (document.querySelectorAll('.recaptcha-checkbox-checkmark').length > 0) {
+                clearInterval(clickCheck);
+                document.querySelector('.recaptcha-checkbox-checkmark').click();
+            }
+        }, 2000);
+    } else {
+        var forms = document.forms;
+        for (var i = 0; i < forms.length; i++) {
+            if (forms[i].innerHTML.indexOf('google.com/recaptcha') > -1) {
+                var rc_form = forms[i];
+                var solveCheck = setInterval(function() {
+                    if (grecaptcha.getResponse().length > 0) {
+                        clearInterval(solveCheck);
+                        $('input[value="Continue"]').click();
+                    }
+                }, 100);
+            }
         }
-    };
+    }
 
     setTimeout(function(){window.location.href='https://ebonus.gg/earn-coins/watch';}, 120000);
 
-    if($('.recaptcha-checkbox').attr('aria-checked') === 'false') {
-        captchaResolve();
+    if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0) {
+        console.log("Captcha Alert");
     } else {
         //Start
         var coinsclicker = setInterval(function() {
@@ -141,7 +146,7 @@ $(document).ready(function(){
         circleEarned = parseInt(sessionStorage.getItem("circleEarnedGet"));
     }
 
-    if($('.recaptcha-checkbox').attr('aria-checked') === 'false') {
+    if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0) {
         console.log("Captcha Alert");
     } else {
         if($("#next-video-btn").html() == "Next Video ["+numberOfVideos+"/"+numberOfVideos+"]") {
