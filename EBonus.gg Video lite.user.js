@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         EBonus.gg Video lite
 // @namespace    https://greasyfork.org/en/users/306626-charlescraft50
-// @version      1.2
+// @version      1.3
 // @description  Click the next video button and the circles/bubbles coins automatically. It also skip the captcha!
 // @author       CharlesCraft50
 // @copyright    2019, CharlesCraft50 (https://openuserjs.org/users/CharlesCraft50)
@@ -64,7 +64,11 @@ $(document).ready(function(){
         }
     }
 
-    setTimeout(function(){window.location.href='https://ebonus.gg/earn-coins/watch';}, 120000);
+    setTimeout(function(){
+        if(window.location.href.indexOf("ebonus.gg/earn-coins/watch") > -1) {
+            window.location.reload();
+        }
+    }, 120000);
 
     if($('p:contains("Please complete this captcha to continue watching videos.")').length > 0) {
         console.log("Captcha Alert");
